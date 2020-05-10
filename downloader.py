@@ -1,24 +1,19 @@
-from pytube import YouTube
-from tkinter import *
-from tkinter import filedialog
-import pyperclip
+from pytube import YouTube #get video from youtube
+from tkinter import * #create window
+from tkinter import filedialog #Create window that asks where to download file to 
+import pyperclip #copy-paste
 import os
-from pytube.helpers import safe_filename
-# import subprocess
-import time
-# import AudioConverter
-# import sys
-from moviepy.editor import *
-# import django
+from pytube.helpers import safe_filename #gets rid of characters that would not work in title of video
+import time #wait
+from moviepy.editor import * #edit video and audio
 import pathlib
 
-#django-admin startproject musicDownloader
 
 root = Tk()
 root.title("Youtube Video Downloader")
 root.geometry("500x200")
 
-#Copy and Paste Code
+#Copy and Paste Class
 
 class StationaryFunctions:
     def __init__(self, text):
@@ -33,10 +28,7 @@ class StationaryFunctions:
         self.text.storeobj['SelectAll'] = self.select_all
         self.text.storeobj['DeselectAll'] = self.deselect_all
         return
-    
-    # def binding_functions_config(self):
-    #     self.text.tag_configure("sel", background = "skyblue")
-    #     return
+   
     
     def copy(self, event):
         self.text.event_generate("&lt;&lt;Copy>>")
@@ -60,35 +52,8 @@ class StationaryFunctions:
         self.text.tag_remove("sel", "1.0", "end")
         return 
 
-
-#Check Box
-# yt = YouTube("http://youtube.com/watch?v=dQw4w9WgXcQ") #Rick Roll video as intial
-
-# def check():
-#     if checked == True:
-#         #do just audio
-#         yt = YouTube(entryBox.get())
-#         getEntry
-#         name = (safe_filename(yt.title) + ".mp3")
-#         yt.streams.filter(only_audio = True).first().download(filename= name)
-#         print("Downloaded Audio")
-#     else:
-#         #do whole video
-#         yt = YouTube(entryBox.get())
-#         getEntry
-#         name = (safe_filename(yt.title) + ".mp4")
-#         yt.streams.first().download(filename=name)
-#         print("Downloaded All")
-        
-
-
-#Store the entry when you hit button
-
-
 input1 = StringVar()
-# checked = BooleanVar()
 
-#  http://youtube.com/watch?v=dQw4w9WgXcQ
 newDirectory = ""
 def getDirectory():
     global directory
@@ -107,17 +72,10 @@ def getEntry():
     # stream = yt.streams.filter(only_audio = True).first()
     stream = yt.streams.first()
     stream.download(filename=name)
-    # time.sleep(1)
-    # mp4 = "'%s'.mp4" % name
-    # mp3 = "'%s'.mp3" % name
-    # ffmpeg = ('ffmpeg -i %s ' % mp4 + mp3)
-    # subprocess.call(ffmpeg, shell = True)
     name1 = name + ".mp4"
-    # path = "C:\\Users\\Scott\\Desktop\\Youtube_Downloader\\" + str(name1)
     path = str(newDirectory) + str(name1)
     video = VideoFileClip(path)
     name2 = name + ".mp3"
-    # path2 = "C:\\Users\\Scott\\Desktop\\Youtube_Downloader\\" + str(name2)
     path2 = str(newDirectory) + str(name2)
     video.audio.write_audiofile(path2)
     time.sleep(1)
@@ -131,10 +89,9 @@ def getEntry():
 
 def downloadVideo():
     yt = YouTube(entryBox.get())
-    #do whole video
     name = (safe_filename(yt.title))
     yt.streams.first().download(filename=name)
-    print("Downloaded All")
+    print("Downloaded Video")
 
 #Clear out box when you click on it
 def clear_search(event):
@@ -147,24 +104,23 @@ entryBox.insert(0, "Paste Youtube link in here")
 if len(entryBox.get()) == 26:
     entryBox.bind("<Button-1>", clear_search)
 
-#buttonthat gets info
+#buttons that let you either download audio or picture too
 entryButton = Button(text = "Click to download the audio", command = getEntry)
 entryButtonVideo = Button(text = "Click to download the video", command = downloadVideo)
 directoryButton = Button(text = "click to select where the file is downloaded", command = getDirectory)
 
+#Copy-Paste attempt 2
 for key in ["&lt;Control-C>","&lt; Control-C>"]:
     pyperclip.copy(entryBox.get())
 
 for key in ["&lt;Control-C>", "&lt; Control-C>"]:
     entryButton.text = pyperclip.paste()
 
+#needed for copy paste
 entryBox.storeobj = {}
 StationaryFunctions(entryBox)
 
-# checked.set(False)
-# checkbutton1 = Checkbutton(root, text = "Check me to just download the video", variable = checked)
-
-# checkbutton1.grid(row = 0,column = 0)
+#place all widgets on tkinter window
 entryBox.grid(row = 0,column = 1)
 entryButton.grid(row = 2,column = 1)
 entryButtonVideo.grid(row = 3, column = 1)
